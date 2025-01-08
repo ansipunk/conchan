@@ -34,7 +34,7 @@ async function startWebhook() {
       }
     }
 
-    return Response.redirect("https://t.me/coreutils", 307);
+    return Response.redirect("https://github.com/ansipunk/conchan", 307);
   });
 }
 
