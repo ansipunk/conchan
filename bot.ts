@@ -34,7 +34,7 @@ bot.command("ban", async (ctx: Context) => {
   await ban(userID);
   await bot.api.sendMessage(userID, BANNED_MESSAGE);
 
-  await ctx.reply(BAN_MESSAGE);
+  await ctx.reply(BAN_MESSAGE, { message_thread_id: topicID });
 });
 
 bot.command("unban", async (ctx: Context) => {
@@ -51,7 +51,7 @@ bot.command("unban", async (ctx: Context) => {
   await unban(userID);
   await bot.api.sendMessage(userID, UNBANNED_MESSAGE);
 
-  await ctx.reply(UNBAN_MESSAGE);
+  await ctx.reply(UNBAN_MESSAGE, { message_thread_id: topicID });
 });
 
 bot.on("message", async (ctx: Context) => {
