@@ -1,5 +1,5 @@
 {
   "tasks": {
-    "run": "deno run --allow-import --allow-env server.ts"
+    "run": "deno run --allow-import --allow-env --allow-net server.ts"
   },
 }
