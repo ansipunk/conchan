@@ -7,9 +7,15 @@ async function startWebhook() {
     secretToken: WEBHOOK_SECRET,
   });
 
-  await bot.api.setWebhook(WEBHOOK_DOMAIN + WEBHOOK_PATH, {
-    secret_token: WEBHOOK_SECRET,
-  });
+  try {
+    await bot.api.setWebhook(WEBHOOK_DOMAIN + WEBHOOK_PATH, {
+      secret_token: WEBHOOK_SECRET,
+    });
+  } catch (err) {
+    if (!(err as Error).message.includes("429: Too Many Requests")) {
+      console.error(err);
+    }
+  }
 
   Deno.serve(async (req) => {
     if (req.method == "POST") {

@@ -10,6 +10,7 @@ import {
 import { Bot, Context } from "./deps.deno.ts";
 import { getTopic, getUser } from "./topics.ts";
 import { ban, isBanned, unban } from "./blacklist.ts";
+import { getMailingTopic, getUsers } from "./mailing.ts";
 
 export const bot = new Bot(BOT_TOKEN);
 
@@ -62,10 +63,18 @@ bot.on("message", async (ctx: Context) => {
     const topicID = message.message_thread_id;
     if (topicID === undefined) return;
 
-    const userID = await getUser(topicID);
-    if (userID === undefined) return;
+    const mailingTopic = await getMailingTopic();
 
-    await ctx.copyMessage(userID);
+    if (topicID === mailingTopic) {
+      for await (const user of getUsers()) {
+        await ctx.copyMessage(user);
+      }
+    } else {
+      const userID = await getUser(topicID);
+      if (userID === undefined) return;
+
+      await ctx.copyMessage(userID);
+    }
   } else if (message.chat.type === "private") {
     const userID = message.chat.id;
     if (await isBanned(userID)) return;
