@@ -27,7 +27,7 @@ async function startWebhook() {
 }
 
 if (WEBHOOK_DOMAIN === "") {
-  await bot.api.deleteWebhook({ drop_pending_updates: false });
+  await bot.api.deleteWebhook({ drop_pending_updates: true });
   await bot.start();
 } else {
   await startWebhook();
