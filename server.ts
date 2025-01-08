@@ -10,6 +10,11 @@ async function startWebhook() {
   try {
     await bot.api.setWebhook(WEBHOOK_DOMAIN + WEBHOOK_PATH, {
       secret_token: WEBHOOK_SECRET,
+      allowed_updates: [
+        "message",
+        "edited_message",
+        "message_reaction",
+      ],
     });
   } catch (err) {
     if (!(err as Error).message.includes("429: Too Many Requests")) {
@@ -28,13 +33,19 @@ async function startWebhook() {
         }
       }
     }
-    return new Response();
+
+    return Response.redirect("https://t.me/coreutils", 307);
   });
 }
 
-if (WEBHOOK_DOMAIN === "") {
-  await bot.api.deleteWebhook({ drop_pending_updates: true });
-  await bot.start();
-} else {
-  await startWebhook();
+async function main() {
+  await bot.api.deleteWebhook({ drop_pending_updates: false });
+
+  if (WEBHOOK_DOMAIN === "") {
+    await bot.start();
+  } else {
+    await startWebhook();
+  }
 }
+
+await main();
