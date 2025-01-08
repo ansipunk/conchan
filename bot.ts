@@ -65,12 +65,12 @@ bot.on("message", async (ctx: Context) => {
     const userID = await getUser(topicID);
     if (userID === undefined) return;
 
-    await ctx.forwardMessage(userID);
+    await ctx.copyMessage(userID);
   } else if (message.chat.type === "private") {
     const userID = message.chat.id;
     if (await isBanned(userID)) return;
 
     const topicID = await getTopic(userID);
-    await ctx.forwardMessage(ADMIN_CHAT_ID, { message_thread_id: topicID });
+    await ctx.copyMessage(ADMIN_CHAT_ID, { message_thread_id: topicID });
   }
 });
